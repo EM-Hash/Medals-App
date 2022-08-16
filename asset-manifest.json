@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Medals-App/static/css/main.cd5f2550.css",
+    "main.js": "/Medals-App/static/js/main.3c4cd9fa.js",
+    "static/js/787.05457380.chunk.js": "/Medals-App/static/js/787.05457380.chunk.js",
+    "index.html": "/Medals-App/index.html",
+    "main.cd5f2550.css.map": "/Medals-App/static/css/main.cd5f2550.css.map",
+    "main.3c4cd9fa.js.map": "/Medals-App/static/js/main.3c4cd9fa.js.map",
+    "787.05457380.chunk.js.map": "/Medals-App/static/js/787.05457380.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cd5f2550.css",
+    "static/js/main.3c4cd9fa.js"
+  ]
+}
