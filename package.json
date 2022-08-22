@@ -1,7 +1,7 @@
 {
   "name": "react-tutorial-one",
   "version": "3.0.0",
-  "homepage": "https://EM-Hash.github.io/Medals-App/medals-03",
+  "homepage": "https://EM-Hash.github.io/Medals-App",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.0",
