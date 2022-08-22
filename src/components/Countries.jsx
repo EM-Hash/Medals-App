@@ -96,17 +96,6 @@ class Countries extends Component {
         }
     }
 
-    getTotalMedals = () => {
-        let countries = this.state.countries;
-        let totalMedals = countries.reduce((total, country) => {
-            let totalMedals = country.medals.reduce((medalSum, medal) => {
-                return medalSum + medal.count;
-            }, 0);
-            return total + totalMedals;
-        }, 0);
-        return totalMedals;
-    }
-
     render() { 
         let countries = this.state.countries;
         let countryMedals = countries.map((country) => {
@@ -121,12 +110,6 @@ class Countries extends Component {
                     <Paper sx={{pb: 1, px: 10, mt: 1}}>
                         <h2>Top Countries: </h2>
                         {this.getTopCountries()}
-                    </Paper>
-                </Grid>
-                <Grid item xs={8} container>
-                    <Paper sx={{mt: 1, width:'100%'}}>
-                        <h3>Total Medals:</h3>
-                        <p>{this.getTotalMedals()}</p>
                     </Paper>
                 </Grid>
                 <Grid item xs={12} container spacing={2} marginTop = {0} padding={2} >
