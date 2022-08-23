@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Grid, Paper } from '@mui/material';
+import { Grid, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import { Box} from '@mui/system';
 import Country from './Country';
 import CountryModal from './CountryModal';
+import Medal from './Medal';
 
 class Countries extends Component {
     medalsTemplate = [{name: "gold", count: 0, color: "gold"}, {name: "silver", count: 0, color: "silver"}, {name: "bronze", count: 0, color: "peru"}];
@@ -40,15 +41,19 @@ class Countries extends Component {
             let country = topCountries[i];
             //List the country and its score
             countryList[i] = (
-                <li key={country.country}>
-                    {country.country}: {country.score} pts
-                </li>
+                <ListItem key={country.country}>
+                    <ListItemText disableTypography>
+                        <Typography sx={{fontSize: '1.5rem'}}>
+                            {i+1}. {country.country}: {country.score} pts
+                        </Typography>
+                    </ListItemText>
+                </ListItem>
             );
         }
         let list = (
-            <ol>
+            <List>
                 {countryList.map((country) => {return country})}
-            </ol>
+            </List>
         )
         return list;
     }
@@ -117,16 +122,18 @@ class Countries extends Component {
         return (
         <Box sx={{flexGrow: 1}}>
             <Grid container justifyContent="center">
-                <Grid item xs={6}>
-                    <Paper sx={{pb: 1, px: 10, mt: 1}}>
-                        <h2>Top Countries: </h2>
-                        {this.getTopCountries()}
+                <Grid item xs={12} container>
+                    <Paper sx={{mt: 1, mx: 10, width:'100%', bgcolor:'secondary.main', borderRadius:'10px', border: 3,
+                    borderColor: 'secondary.dark'}}>
+                        <Typography color="primary.main" variant="h3">Olympic Medals</Typography>
+                        <Medal medal={{"name": "all", "count": this.getTotalMedals(), "color": "primary.main"}}></Medal>
                     </Paper>
                 </Grid>
-                <Grid item xs={8} container>
-                    <Paper sx={{mt: 1, width:'100%'}}>
-                        <h3>Total Medals:</h3>
-                        <p>{this.getTotalMedals()}</p>
+                <Grid item xs={6}>
+                    <Paper sx={{pb: 1, px: 10, mt: 1, bgcolor:'secondary.dark', borderRadius:'10px', border: 3,
+                    borderColor: 'secondary.main', color: 'primary.main'}}>
+                        <Typography variant="h4">Top Countries:</Typography>
+                        {this.getTopCountries()}
                     </Paper>
                 </Grid>
                 <Grid item xs={12} container spacing={2} marginTop = {0} padding={2} >

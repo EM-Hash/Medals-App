@@ -26,7 +26,7 @@ class CountryDialog extends Component {
     render() { 
         return (
             <Container>
-                <Button onClick={this.handleOpen}>Add Country</Button>
+                <Button variant="outlined" color="info" size="large" onClick={this.handleOpen}>Add Country</Button>
                 <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth={'md'} id="countryDialog">
                     <DialogTitle>Please Enter the Country's Name</DialogTitle>
                     <DialogContent>
@@ -34,8 +34,8 @@ class CountryDialog extends Component {
                         <TextField variant="outlined" color="secondary" margin="dense" fullWidth value={this.state.name} onChange={this.handleChange}></TextField>
                     </DialogContent>
                     <DialogActions>
-                        <Button color="error" variant="outlined" onClick={this.handleClose}>Cancel</Button>
-                        <Button color="success" variant="outlined" onClick={this.addCountry}>Add Country</Button>
+                        <Button color="error" variant="contained" onClick={this.handleClose}>Cancel</Button>
+                        <Button color="success" variant="contained" onClick={this.addCountry}>Add Country</Button>
                     </DialogActions>
                 </Dialog>
             </Container>
