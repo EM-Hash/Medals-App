@@ -35,7 +35,7 @@ class CountryDialog extends Component {
                     </DialogContent>
                     <DialogActions>
                         <Button color="error" variant="contained" onClick={this.handleClose}>Cancel</Button>
-                        <Button color="success" variant="contained" onClick={this.addCountry}>Add Country</Button>
+                        <Button color="success" variant="contained" disabled={this.state.name.trim() === ''} onClick={this.addCountry}>Add Country</Button>
                     </DialogActions>
                 </Dialog>
             </Container>
