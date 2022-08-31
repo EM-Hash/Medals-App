@@ -101,6 +101,12 @@ class Countries extends Component {
         }
     }
 
+    deleteCountry = (country) => {
+        let newCountries = this.state.countries;
+        newCountries.splice(newCountries.indexOf(country),1);
+        this.setState({countries: newCountries});
+    }
+
     getTotalMedals = () => {
         let countries = this.state.countries;
         let totalMedals = countries.reduce((total, country) => {
@@ -116,7 +122,7 @@ class Countries extends Component {
         let countries = this.state.countries;
         let countryMedals = countries.map((country) => {
             return (
-                <Country key={country.name} name={country.name} medals={country.medals} changeMedalNum = {this.changeMedalNum}></Country>
+                <Country key={country.name} handleDelete={this.deleteCountry} country={country} changeMedalNum = {this.changeMedalNum}></Country>
             )
         });
         return (
@@ -129,8 +135,8 @@ class Countries extends Component {
                         <Medal medal={{"name": "all", "count": this.getTotalMedals(), "color": "primary.main"}}></Medal>
                     </Paper>
                 </Grid>
-                <Grid item xs={6}>
-                    <Paper sx={{pb: 1, px: 10, mt: 1, bgcolor:'secondary.dark', borderRadius:'10px', border: 3,
+                <Grid item xs={12} sm={6}>
+                    <Paper sx={{pb: 1, px: 10, mt: 1, mx: 2, bgcolor:'secondary.dark', borderRadius:'10px', border: 3,
                     borderColor: 'secondary.main', color: 'primary.main'}}>
                         <Typography variant="h4">Top Countries:</Typography>
                         {this.getTopCountries()}

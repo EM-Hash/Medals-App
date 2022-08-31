@@ -24,3 +24,32 @@
   background-color: #e8eaf6;
   border-radius: 5px;
 }
+
+.countryHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.countryHeader *{
+  display: inline-block;
+}
+
+.countryHeader .trashIcon{
+  position: absolute;
+  left: 90%;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 900px){
+  .countryHeader .trashIcon{
+    left: 85%;
+  }
+}
+
+@media screen and (min-width: 1536px){
+  .countryHeader .trashIcon{
+    left: 93%;
+  }
+}

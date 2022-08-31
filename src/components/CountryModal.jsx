@@ -1,4 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, TextField} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { Container } from '@mui/system';
 import React, { Component } from 'react';
 
@@ -25,8 +26,8 @@ class CountryDialog extends Component {
 
     render() { 
         return (
-            <Container>
-                <Button variant="outlined" color="info" size="large" onClick={this.handleOpen}>Add Country</Button>
+            <Container sx={{'display': 'flex', 'justifyContent': 'right'}}>
+                <Fab color="info" size="large" onClick={this.handleOpen}><AddIcon /></Fab>
                 <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth={'md'} id="countryDialog">
                     <DialogTitle>Please Enter the Country's Name</DialogTitle>
                     <DialogContent>
