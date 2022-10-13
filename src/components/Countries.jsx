@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import axios from 'axios';
 import Country from './Country';
 import CountryModal from './CountryModal';
 import Medal from './Medal';
 
 const Countries = () => {
-
-    const medalsTemplate =[
-        {name: "gold", count: 0, color: "gold"}, 
-        {name: "silver", count: 0, color: "silver"}, 
-        {name: "bronze", count: 0, color: "peru"}
-    ]
+    const apiEndpoint = "https://localhost:5001/api/country";
 
     const [countries, setCountries] = useState([]);
-
-    // const [countries, setCountries] = useState([{
-    //     "name": "America",
-    //     "medals": medalsTemplate.map(medal => {return {...medal}})
-    // }]);
 
     const getTopCountries = () => {
         //Sort by each country's score (described in getScore)
@@ -27,7 +18,7 @@ const Countries = () => {
         //For each country...
         for(let country of countries){
             //Get the medal count
-            let score = getScore(country.medals);
+            let score = getScore(country);
             //Create a new object w/ the name and total medal count
             let newCountry = {"country": country.name, "score": score};
             //Add the new object to the countries
@@ -61,82 +52,87 @@ const Countries = () => {
         return list;
     }
 
-    const getScore = (medals) => {
+    const getScore = (country) => {
         //Score based on the medals each country gained
         //Each medal has a weighted value
         let values = {"gold": 5, "silver": 3, "bronze": 1};
         let sum = 0;
-        //For each tier of medal...
-        medals.map(medal => {
-            //Calculate the points earned
-            let points = values[medal.name] * medal.count;
-            //Add it to the sum of total points
-            sum += points;
-            return sum;
-        });
+        sum = (country.goldMedalCount * values.gold) + (country.silverMedalCount * values.silver) + (country.bronzeMedalCount * values.bronze);
         return sum;
     }
 
     const changeMedalNum = (countryName, medalName, quantity) => {
-        let targetCountry = countries.filter(country => country.name === countryName);
+        // let targetCountry = countries.filter(country => country.name === countryName);
 
-        if(targetCountry.length > 0){
-            let newCountry = targetCountry[0];
+        // if(targetCountry.length > 0){
+        //     let newCountry = targetCountry[0];
 
-            let targetMedal = newCountry.medals.filter(medal => medal.name === medalName);
-            let targetMedalIndex = newCountry.medals.indexOf(targetMedal[0]);
-            let countryIndex = countries.indexOf(targetCountry[0]);
+        //     let targetMedal = newCountry.medals.filter(medal => medal.name === medalName);
+        //     let targetMedalIndex = newCountry.medals.indexOf(targetMedal[0]);
+        //     let countryIndex = countries.indexOf(targetCountry[0]);
 
-            let newCountries = countries.slice();
+        //     let newCountries = countries.slice();
 
-            newCountry.medals[targetMedalIndex].count += quantity;
-            newCountries[countryIndex] = newCountry;
-            setCountries(newCountries);
-        }
+        //     newCountry.medals[targetMedalIndex].count += quantity;
+        //     newCountries[countryIndex] = newCountry;
+        //     setCountries(newCountries);
+        // }
     }
 
-    const addCountry = (countryName) => {
+    const addCountry =  async (countryName) => {
         let sameNameCountries = countries.filter(country => country.name.toLowerCase() === countryName.toLowerCase());
-        
         if(sameNameCountries.length < 1){
             let newCountry = {
                 "name": countryName,
-                "medals": medalsTemplate.map(medal => {return {...medal}})
+                "goldMedalCount": 0,
+                "silverMedalCount": 0,
+                "bronzeMedalCount": 0
             }
     
-            let newCountries = countries.concat([newCountry]);
-            setCountries(newCountries);
+            const {data : post} = await axios.post(apiEndpoint, newCountry);
+            setCountries(countries.concat(post));
+        } else {
+            // eslint-disable-next-line no-throw-literal
+            throw {"name": "Duplicate Names", message: `"${countryName}" is already registered.`}
         }
     }
 
-    const deleteCountry = (country) => {
-        let newCountries = countries.slice();
-        newCountries.splice(newCountries.indexOf(country),1);
-        setCountries(newCountries);
+    const deleteCountry = async (country) => {
+        const originalCountries = countries;
+        setCountries(countries.filter(c => c.id !== country.id));
+        try{
+            await axios.delete(`${apiEndpoint}/${country.id}`);
+        } catch (exception){
+            if(exception.response && exception.response.status === 404){
+                //We don't want to set the countries back to the original set here, because that country shouldn't 
+                //Be in the set anyways
+                console.error("Error 404: Record could not be found.")
+            } else {
+                setCountries(originalCountries);
+                console.error("An error occured during your request: ", exception.name, exception.message);
+            }
+        }
+        
+        // let newCountries = countries.slice();
+        // newCountries.splice(newCountries.indexOf(country),1);
+        // setCountries(newCountries);
     }
 
     const getTotalMedals = () => {
         let totalMedals = countries.reduce((total, country) => {
-            let totalMedals = country.medals.reduce((medalSum, medal) => {
-                return medalSum + medal.count;
-            }, 0);
-            return total + totalMedals;
+            let sum = country.goldMedalCount + country.silverMedalCount + country.bronzeMedalCount;
+            return total + sum;
         }, 0);
         return totalMedals;
     }
 
     useEffect(() => {
-        const medalsTemplate =[
-            {name: "gold", count: 0, color: "gold"}, 
-            {name: "silver", count: 0, color: "silver"}, 
-            {name: "bronze", count: 0, color: "peru"}
-        ]
+        async function fetchData(){
+            const {data : fetchedCountries} = await axios.get(apiEndpoint);
+            setCountries(fetchedCountries);
+        }
 
-        let newCountries = [{
-            "name": "America",
-            "medals": medalsTemplate.map(medal => {return {...medal}})
-        }];
-        setCountries(newCountries);
+        fetchData();
     }, []);
 
     let countryMedals = countries.map((country) => {

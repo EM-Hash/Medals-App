@@ -5,6 +5,7 @@ import { Container } from '@mui/system';
 import React from 'react';
 
 const Medal = ({ medal }) => {
+
     return (
         <Container sx={{color: medal.color}}>
             <FontAwesomeIcon icon={faMedal} size="xl" ></FontAwesomeIcon>

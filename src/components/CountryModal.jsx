@@ -1,11 +1,13 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, TextField} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, TextField, Typography} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Container } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 
 const CountryDialog = ({addCountry}) => {
-    const [open, setOpen] = React.useState(false);
-    const [name, setName] = React.useState('');
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [isValidName, setIsValidName] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     const handleOpen = () => setOpen(true);
@@ -13,13 +15,22 @@ const CountryDialog = ({addCountry}) => {
     const handleClose = () => {
         setOpen(false);
         setName('');
+        setErrorMessage('');
+        setIsValidName(true);
     }
 
-    const handleNewCountry = () => {
+    const handleNewCountry = async () => {
         if(name){
-            addCountry(name);
-        } 
-        handleClose();
+            try{
+                await addCountry(name);
+                handleClose();
+            } catch (exception){
+                setIsValidName(false);
+                let errorMessage = (<span><b>Error - {exception.name}:</b> {exception.message}</span>);
+                console.log(errorMessage);
+                setErrorMessage(errorMessage);
+            }
+        }
     }
 
     const handleChange = (event) => {
@@ -36,6 +47,7 @@ const CountryDialog = ({addCountry}) => {
                     <DialogContentText>Country Name:</DialogContentText>
                     <TextField variant="outlined" color="secondary" margin="dense" fullWidth value={name} 
                     onChange={handleChange}></TextField>
+                    <Typography  id="errorText" hidden={isValidName} style={{'color': '#ff6f00', 'font-size': '1.2rem'}}>{errorMessage}</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button color="error" variant="contained" onClick={handleClose}>Cancel</Button>
