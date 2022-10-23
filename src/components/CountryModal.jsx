@@ -26,8 +26,14 @@ const CountryDialog = ({addCountry}) => {
                 handleClose();
             } catch (exception){
                 setIsValidName(false);
-                let errorMessage = (<span><b>Error - {exception.name}:</b> {exception.message}</span>);
-                console.log(errorMessage);
+                let errorMessage;
+                if (exception.response && (exception.response.status === 401 || exception.response.status === 403)) {
+                errorMessage = "Error - " + exception.response.status + ": You are not authorized to complete this request";
+                } else if (exception.response) {
+                errorMessage = `Error - ${exception.response}`
+                } else {
+                errorMessage = (<span><b>Error - {exception.name}:</b> {exception.message}</span>);
+                }
                 setErrorMessage(errorMessage);
             }
         }
@@ -47,7 +53,7 @@ const CountryDialog = ({addCountry}) => {
                     <DialogContentText>Country Name:</DialogContentText>
                     <TextField variant="outlined" color="secondary" margin="dense" fullWidth value={name} 
                     onChange={handleChange}></TextField>
-                    <Typography  id="errorText" hidden={isValidName} style={{'color': '#ff6f00', 'font-size': '1.2rem'}}>{errorMessage}</Typography>
+                    <Typography  id="errorText" hidden={isValidName} style={{'color': '#ff6f00', 'fontSize': '1.2rem'}}>{errorMessage}</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button color="error" variant="contained" onClick={handleClose}>Cancel</Button>

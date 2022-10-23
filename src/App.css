@@ -36,20 +36,65 @@
   display: inline-block;
 }
 
-.countryHeader .trashIcon{
+.medalContainer{
+  padding-top: 5px;
+  margin: 0 5px;
+}
+
+.unsaved {
+  background-color: #bf6392;
+  border-radius: 5px;
+}
+
+.unsaved * {
+  font-style: italic;
+}
+
+.countryHeader .endIcon{
   position: absolute;
   left: 90%;
   cursor: pointer;
 }
 
+.countryHeader .icon{
+  position: absolute;
+  left: 80%;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 900px){
-  .countryHeader .trashIcon{
+  .countryHeader .endIcon{
     left: 85%;
+  }
+
+  .countryHeader .icon{
+    left: 75%;
   }
 }
 
 @media screen and (min-width: 1536px){
-  .countryHeader .trashIcon{
+  .countryHeader .endIcon{
     left: 93%;
   }
+}
+
+.loginLink, .logout, .logoutlink {
+  color: #fff;
+}
+
+
+
+div.loginForm {
+  border: ridge 3px #880e4f;
+  border-radius: 5px;
+  background-color: #9F3E72;
+  padding: 8px;
+  position: absolute;
+  width: 350px;
+  height: 250px;
+  left: 0;
+}
+
+div.loginForm label{
+  color: white;
 }
